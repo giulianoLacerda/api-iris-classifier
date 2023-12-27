@@ -1,0 +1,13 @@
+prod:
+  app_name: api-iris-classifier
+  model_name: iris_model
+  model_stage: Production
+  mlflow_uri: http://localhost:8081/
+  MODE_DEPLOY: prod
+
+dev:
+  app_name: api-iris-classifier
+  model_name: iris_model
+  model_stage: Archived
+  mlflow_uri: http://localhost:8081/
+  MODE_DEPLOY: dev
