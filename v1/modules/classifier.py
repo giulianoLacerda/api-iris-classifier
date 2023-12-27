@@ -32,7 +32,9 @@ class Classifier:
         Returns:
             str: Returns a string label.
         """
-        return self.model._model_impl.sklearn_model.classes_[list(conf_list).index(pred_conf)]
+        return self.model._model_impl.sklearn_model.classes_[
+            list(conf_list).index(pred_conf)
+        ]
 
     def _predict_proba(self, input):
         """Predict the list of probabilitys for a input.
