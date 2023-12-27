@@ -12,7 +12,9 @@ def create_app(env):
     for version in os.listdir("./"):
         if os.path.isdir(version) and version[0] == "v":
             api_version = import_module("{}.app".format(version))
-            app.register_blueprint(getattr(api_version, "api_bp"), url_prefix="/" + version)
+            app.register_blueprint(
+                getattr(api_version, "api_bp"), url_prefix="/" + version
+            )
 
     return app
 

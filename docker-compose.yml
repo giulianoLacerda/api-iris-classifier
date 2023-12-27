@@ -2,7 +2,7 @@ version: '2.3'
 services:
   server:
     container_name: iris_classifier
-    env_file: .env 
+    env_file: .env
     build:
       context: .
       dockerfile: Dockerfile
