@@ -80,6 +80,40 @@ docker-compose up -d
 
 At the end of the process, the container will be running in [http://localhost:9191/](http://localhost:9191/)
 
+### Google Cloud Run
+
+#### Upload Image to Registry
+
+To upload the image, make sure that the image has already been built with docker-compose and that you already have the gcloud-cli environment configured locally for your project [link](https://cloud.google.com/sdk/docs/install?hl=pt-br). You also need to have the Container Registry and Cloud Run enabled for your project.
+
+Rename your image:
+
+```console
+docker tag api-iris-classifier_server:latest gcr.io/{PROJECT_ID}/api-iris/api-iris-classifier:local
+```
+
+Authenticate docker to gcloud:
+
+```console
+gcloud auth configure-docker
+```
+
+Then upload the image.
+
+```console
+docker push gcr.io/{PROJECT_ID}/api-iris/api-iris-classifier:local
+```
+
+Finally, deploy it:
+
+```console
+gcloud run deploy api-iris-classifier \
+--allow-unauthenticated \
+--platform=managed \
+--image gcr.io/{PROJECT_ID}/api-iris/api-iris-classifier:local \
+--port 8080 --region us-central1 --cpu 1 --memory 512Mi --concurrency 2 --env-vars-file clouddeploy.yml
+```
+
 ## Process Inference
 
 ### Request
@@ -131,3 +165,19 @@ Example of error when the payload does not accord with the pattern request:
   "version": "0.0.0"
 }
 ```
+
+## Load Test
+
+To do the load test in the deployment environment, you need to install [locust](https://locust.io/).
+Create the environment and install it. In the `locust/locust.py` directory, rename the `uri` variable to the deployed endpoint.
+Next, run locust and perform the load test by opening the interface on [http://localhost:8089](http://localhost:8089)
+
+```console
+locust -f ./locust/locust.py -H http://127.0.0.1:5000
+```
+
+### Results
+
+For the test with the instance I configured and with a maximum of 50 simultaneous users during 30min, the result was as follows:
+
+![alt text for screen readers](./locust/locust_load_test.png "Load Test Locust")

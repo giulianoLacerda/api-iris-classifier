@@ -45,4 +45,5 @@ print("tuned hpyerparameters :(best parameters) ", logreg_cv.best_params_)
 print("accuracy :", logreg_cv.best_score_)
 
 y_predict = logreg_cv.predict(x_test.values)
-f1_score(y_test, y_predict, average="macro")
+f1_test_score = f1_score(y_test, y_predict, average="macro")
+print(f"f1 score {f1_test_score}")
